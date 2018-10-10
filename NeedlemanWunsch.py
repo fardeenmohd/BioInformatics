@@ -17,3 +17,10 @@ def initialise_matrix(seq_a, seq_b):
     seq_b = BLANK + seq_b
 
     matrix = np.ndarray(shape=(len(seq_a), len(seq_b)))
+
+    for i in range(len(seq_a)):
+        for j in range(len(seq_b)):
+            if i == 0 and j == 0:
+                matrix[0][0] = 0
+            else:
+                pass
