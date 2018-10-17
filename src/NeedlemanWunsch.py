@@ -12,7 +12,7 @@ def score_function(a, b):
         return -2
 
 
-def initialise_matrix(seq_a, seq_b):
+def initialise_matrix(seq_a, seq_b, local=False):
     seq_a = BLANK + seq_a
     seq_b = BLANK + seq_b
 
@@ -25,10 +25,14 @@ def initialise_matrix(seq_a, seq_b):
                 matrix[0][0] = 0
                 direction_matrix[0][0] = None
             else:
+
                 diagonal = matrix[i - 1][j - 1] + score_function(seq_a[i], seq_b[j])
                 left = matrix[i][j - 1] + score_function(BLANK, seq_b[j])
                 right = matrix[i - 1][j] + score_function(seq_a[i], BLANK)
-                selected_max = max(left, right, diagonal)
+                if local:
+                    selected_max = max(left, right, diagonal, 0)
+                else:
+                    selected_max = max(left, right, diagonal)
                 matrix[i][j] = selected_max
                 temp_direction = None
                 if selected_max == left:
@@ -37,6 +41,8 @@ def initialise_matrix(seq_a, seq_b):
                     temp_direction = 'R'
                 elif selected_max == diagonal:
                     temp_direction = 'D'
+                elif selected_max == 0:
+                    temp_direction = None
 
                 direction_matrix[i][j] = temp_direction
 
