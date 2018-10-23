@@ -5,7 +5,6 @@ LEFT = "L"
 RIGHT = "R"
 DIAGONAL = "D"
 
-
 def score_function(a, b):
     if a == b:
         return 1
@@ -13,7 +12,6 @@ def score_function(a, b):
         return -1
     if a == BLANK or b == BLANK:
         return -2
-
 
 def initialise_matrix(seq_a, seq_b, local=False):
     seq_a = BLANK + seq_a
@@ -57,7 +55,6 @@ def find_similarity(seq_a, seq_b, matrix, direction_matrix):
     res_a = ""
     res_b = ""
 
-
     while (current_direction != None) and (current_index[0] > 0) and (current_index[1] > 0) :
         if current_direction == LEFT:
             res_a = BLANK + res_a
@@ -76,9 +73,6 @@ def find_similarity(seq_a, seq_b, matrix, direction_matrix):
 
     return res_a, res_b 
 
-
-
-
 def main():
     A = 'AGGTA'
     B = 'GAGTTCA'
@@ -94,7 +88,5 @@ def main():
 
     print("Sequence A was: "+ A + " after local alignment: " + local_result_a)
     print("Sequence B was: "+ B + " after local alignment: " + local_result_b)
-
-
 
 main()
