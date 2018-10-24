@@ -49,8 +49,12 @@ def initialise_matrix(seq_a, seq_b, local=False):
 
     return matrix, direction_matrix
 
-def find_similarity(seq_a, seq_b, matrix, direction_matrix):
-    current_index = (len(seq_a), len(seq_b))
+def find_similarity(seq_a, seq_b, matrix, direction_matrix, local=False):
+    if local:
+        current_index = np.unravel_index(matrix.argmax(), matrix.shape)
+    else:
+        current_index = (len(seq_a), len(seq_b))
+    
     current_direction = direction_matrix[current_index[0]][current_index[1]]
     res_a = ""
     res_b = ""
@@ -58,11 +62,11 @@ def find_similarity(seq_a, seq_b, matrix, direction_matrix):
     while (current_direction != None) and (current_index[0] > 0) and (current_index[1] > 0) :
         if current_direction == LEFT:
             res_a = BLANK + res_a
-            res_b = seq_b[current_index[1]] + res_b
+            res_b = seq_b[current_index[1] - 1] + res_b
             current_index = (current_index[0], current_index[1] - 1) 
         elif current_direction == RIGHT:
-            res_b = seq_a[current_index[0]] + res_b
-            res_a = BLANK + res_a
+            res_a = seq_a[current_index[0] - 1] + res_a
+            res_b = BLANK + res_b
             current_index = (current_index[0] - 1, current_index[1])
         elif current_direction == DIAGONAL:
             res_a = seq_a[current_index[0] - 1] + res_a 
@@ -74,17 +78,17 @@ def find_similarity(seq_a, seq_b, matrix, direction_matrix):
     return res_a, res_b 
 
 def main():
-    A = 'AGGTA'
-    B = 'GAGTTCA'
+    A = 'TTTCTTAG'
+    B = 'TTTTTAC'
 
     global_matrix, global_direction_matrix = initialise_matrix(A, B, local=False)
-    global_result_a, global_result_b = find_similarity(A, B, global_matrix, global_direction_matrix)
+    global_result_a, global_result_b = find_similarity(A, B, global_matrix, global_direction_matrix, local=False)
 
     print("Sequence A was: "+ A + " after global alignment: " + global_result_a)
     print("Sequence B was: "+ B + " after global alignment: " + global_result_b)
 
     local_matrix, local_direction_matrix = initialise_matrix(A, B, local=True)
-    local_result_a, local_result_b = find_similarity(A, B, local_matrix, local_direction_matrix)
+    local_result_a, local_result_b = find_similarity(A, B, local_matrix, local_direction_matrix, local=True)
 
     print("Sequence A was: "+ A + " after local alignment: " + local_result_a)
     print("Sequence B was: "+ B + " after local alignment: " + local_result_b)
