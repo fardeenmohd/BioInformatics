@@ -52,8 +52,10 @@ def initialise_matrix(seq_a, seq_b, local=False):
 def find_similarity(seq_a, seq_b, matrix, direction_matrix, local=False):
     if local:
         current_index = np.unravel_index(matrix.argmax(), matrix.shape)
+        score = matrix[current_index[0]][current_index[1]]
     else:
         current_index = (len(seq_a), len(seq_b))
+        score = matrix[current_index[0]][current_index[1]]
     
     current_direction = direction_matrix[current_index[0]][current_index[1]]
     res_a = ""
@@ -75,22 +77,22 @@ def find_similarity(seq_a, seq_b, matrix, direction_matrix, local=False):
 
         current_direction = direction_matrix[current_index[0]][current_index[1]]
 
-    return res_a, res_b 
+    return res_a, res_b, score 
 
 def main():
     A = 'TTTCTTAG'
     B = 'TTTTTAC'
 
     global_matrix, global_direction_matrix = initialise_matrix(A, B, local=False)
-    global_result_a, global_result_b = find_similarity(A, B, global_matrix, global_direction_matrix, local=False)
+    global_result_a, global_result_b, global_score = find_similarity(A, B, global_matrix, global_direction_matrix, local=False)
 
-    print("Sequence A was: "+ A + " after global alignment: " + global_result_a)
-    print("Sequence B was: "+ B + " after global alignment: " + global_result_b)
+    print("Sequence A was: "+ A + " after global alignment: " + global_result_a + " with a score: "+ str(global_score))
+    print("Sequence B was: "+ B + " after global alignment: " + global_result_b + " with a score: "+ str(global_score))
 
     local_matrix, local_direction_matrix = initialise_matrix(A, B, local=True)
-    local_result_a, local_result_b = find_similarity(A, B, local_matrix, local_direction_matrix, local=True)
+    local_result_a, local_result_b, local_score = find_similarity(A, B, local_matrix, local_direction_matrix, local=True)
 
-    print("Sequence A was: "+ A + " after local alignment: " + local_result_a)
-    print("Sequence B was: "+ B + " after local alignment: " + local_result_b)
+    print("Sequence A was: "+ A + " after local alignment: " + local_result_a + " with a score: "+ str(local_score))
+    print("Sequence B was: "+ B + " after local alignment: " + local_result_b + " with a score: "+ str(local_score))
 
 main()
